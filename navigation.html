@@ -3,7 +3,7 @@
 <ul class="collapsible" data-collapsible="accordion">
     <li style="padding: 0;">
         <div class="collapsible-header" style="padding: 0;">
-            <a href="/" style="display: block; width: 100%; margin: 10px;"><i class="fa fa-home"></i> Home</a>        
+            <a href="/"><i class="fa fa-home"></i> Home</a>        
         </div>
     </li>
     {% for category in categories %}
@@ -13,7 +13,7 @@
                 
                     <li style="padding: 0;">
                         <div class="collapsible-header" style="padding: 0;">
-                            <a style="display: block; width: 100%; margin: 10px;"><i class="fa fa-chevron-right"></i> {{ category }}</a>
+                            <a><i class="fa fa-chevron-right"></i> {{ category }}</a>
                         </div>
                         <div class="collapsible-body" style="padding: 0;">
                             <span>
@@ -37,7 +37,7 @@
                 {% else %}
                     <li style="padding: 0;">
                         <div class="collapsible-header" style="padding: 0;">
-                            <a href="/category/{{ category.id }}" style="display: block; width: 100%; margin: 10px;"><i class="fa fa-chevron-right"></i> {{ category }}</a>        
+                            <a href="/category/{{ category.id }}"><i class="fa fa-chevron-right"></i> {{ category }}</a>        
                         </div>
                     </li>
                 {% endif %}
