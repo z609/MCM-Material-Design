@@ -1,0 +1,18 @@
+{% extends base  %}
+{% load i18n %}
+
+{% block content %}
+<div class="card">
+    <div class="card-content">
+        <span class="card-title">Please enter your Minecraft username to continue</span>
+        <form method="post" enctype="multipart/form-data" id="storeloginform">
+            {% csrf_token %}
+            {{ username_form.username }}
+            <div align="right">
+                <button type="submit" class="btn waves-effect waves-light">Continue</button>
+            </div>
+            <span class="red white-text" style="padding: 5px;">Important</span> By proceeding to purchase any items from our store, you acknowledge and agree to our <a href="/terms/">terms of service</a>.
+        </form>
+    </div>
+</div>
+{% endblock %}

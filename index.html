@@ -1,0 +1,27 @@
+{% extends base %}
+{% load currency %}
+
+{% block content %}
+    <style>
+    p 
+    {
+        margin-bottom: 10px !important;
+    }
+    </style>
+    
+    {% if market.marketDesc %}
+        <div class="card">
+            <div class="card-content" style="min-height: 500px;">
+                {{ market.marketDesc|safe|removetags:"script object src SRC OBJECT SCRIPT" }}
+            </div>
+        </div>
+    {% else %}
+        <div class="card">
+            <div class="card-content" style="padding: 50px; text-align: center;">
+                <i class="fa fa-exclamation-triangle" style="font-size: 120pt;"></i><br>
+                <h2>Under Construction</h2>
+                <div class="lead">The page you requested is currently under construction. You may continue shopping, although this page will not work until further notice.</div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

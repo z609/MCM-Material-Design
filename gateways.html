@@ -1,0 +1,51 @@
+{% extends base %}
+{% load currency %}
+{% load i18n %}
+{% block content %}
+
+<div class="card">
+    <div class="card-content">
+        <span class="card-title">Proceed to Checkout</span>
+        
+        <form id="cart_gateways" method="post" action="/checkout/pay/"
+              onsubmit="return Checkout($(this));">
+            <input id="gateway_choice" type="hidden" name="gateway" value="">
+            <ul class="collection" style="margin-bottom: 0;">
+                {% for gateway in gateways %}
+                <li class="collection-item">
+                    <div>
+                        {% if gateway.type == '1' %}
+                            <img class="checkout-gateway-image"
+                                 src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-150px.png"
+                                 border="0" alt="Pay with PayPal">
+                            <button type="submit" name="{{ gateway.id }}"
+                                   class="gateway_submit secondary-content btn">Pay with PayPal</button>
+                        {% elif gateway.type == '2' %}
+                            <img class="checkout-gateway-image"
+                                 src="http://www.paymentwall.com/images/buttons/logo2_big.png"
+                                 border="0" alt="Pay with PaymentWall">
+                            <button type="submit" name="{{ gateway.id }}"
+                                   class="gateway_submit secondary-content btn">Pay with PaymentWall</button>
+                        {% elif gateway.type == '3' %}
+                            <img class="checkout-gateway-image"
+                                 src="https://www.paygol.com/images/index_logo_main.png"
+                                 border="0" alt="Pay with PayGol">
+                            <button type="submit" name="{{ gateway.id }}"
+                                   class="gateway_submit secondary-content btn">Pay with PayGol</button>
+                        {% elif gateway.type == '4' %}
+                            <img class="checkout-gateway-image"
+                                 src="http://assets.minecraftmarket.com/static/img/google_wallet.png"
+                                 border="0" alt="Pay with Google Wallet">
+                            <button type="submit" name="{{ gateway.id }}"
+                                   class="gateway_submit secondary-content btn">Pay with Google Wallet</button>
+                        {% endif %}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul><br>
+            <span class="red white-text" style="padding: 5px;">Important</span> By proceeding to purchase any items from our store, you acknowledge and agree to our <a href="/terms/">terms of service</a>.
+        </form>
+    </div>
+</div>
+
+{% endblock %}

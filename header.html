@@ -1,0 +1,93 @@
+{% load i18n %}
+{% load currency %}
+
+{% load i18n %}
+{% load currency %}
+
+<div class="navbar-fixed">
+    <nav class="userColor darken-4" id="header">
+        <div class="nav-wrapper">
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="fa fa-bars"></i></a>
+            <a href="javascript:alert('Not setup, check header.html');">
+                <img class="brand-logo center" src="https://img.clipartfest.com/de69f69bdb21a7b49288b23d8ab143e1_explore-minecraft-grass-block-minecraft-grass-block-clipart_420-420.jpeg"></a>
+            </a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+				<li><a href=""><i class="fa fa-link"></i> Link</a></li>
+				<li><a href=""><i class="fa fa-link"></i> Link</a></li>
+				<li><a href=""><i class="fa fa-link"></i> Link</a></li>
+            </ul>
+            <ul class="side-nav" id="mobile-demo">
+				<li><a href=""><i class="fa fa-link"></i> Link</a></li>
+				<li><a href=""><i class="fa fa-link"></i> Link</a></li>
+				<li><a href=""><i class="fa fa-link"></i> Link</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div style="margin-bottom: 15px;">
+    <nav class="nav-extended userColor darken-3">
+        <div class="nav-wrapper container">
+            <a class="brand-logo">{{ market.marketName }}</a>
+            <ul class="right">
+                <li><a href="https://www.minecraftmarket.com" target="_blank"><img src="https://assets.minecraftmarket.com/static/new_panel/img/logo.svg" style="display: block; position: absolute; right: 15px; height: 52px; border-radius: 50%; {% if 'username' in request.session %}top: 30px;{% else %}bottom: 5px;{% endif %}"></a></li>
+            </ul>
+        </div>
+        {% if 'username' in request.session %}
+        <div class="nav-content container">
+            <ul class="tabs tabs-transparent">
+                <li class="tab"><a class="active" href="#currentshop">Shop</a></li>
+                <li class="tab"><a href="#shopprofile">{{ cart_info.count }} item(s) for {% change_currency cart_total CURRENCY.code market.currency %} {{ request.session.currency }}</a></li>
+                <li class="tab"><a href="#logout">Log Out</a></li>
+            </ul>
+        </div>
+        {% endif %}
+    </nav>
+</div>
+
+{% if 'username' in request.session %}
+<script>
+    $(document).ready(function(){
+        $('#shopprofile').html('<div class="card">' + 
+            '<div class="card-content">' + 
+            '<div class="row" style="margin: 0;">' +  
+            '<div class="col-sm-2" style="text-align: center;">' +  
+            '<img src="https://minotar.net/bust/{{ request.session.username }}.png" style="max-width: 100%;">' +
+            '</div>' + 
+            '<div class="col-sm-10">' +  
+            '<div style="max-width: 500px; margin-left: auto; margin-right: auto; margin-top: 35px; margin-bottom: 35px;">' + 
+            '<span class="card-title">You are currently shopping as <strong>{{ request.session.username }}</strong></span>' + 
+            '<p>If this is not you, please <a href="/logout/">log out</a> now.</p>' +
+            '</div>' + 
+            '</div>' + 
+            '</div>' +
+            '</div>' +
+            '</div>' + 
+            '<div class="card">' + 
+            '<div class="card-content">' + 
+            '<span class="card-title">Shopping Cart</span>' + 
+            {% if cart_info.count > 0 %} 
+            '<ul class="collection" style="margin-bottom: 0;">' + 
+                {% for item in cart %}
+                    '<li class="collection-item">' + 
+                        '<div>' + 
+                            '{{ item.product.itemName }} <span class="grey-text">{% change_currency item.total_price CURRENCY.code market.currency %} {{ request.session.currency }}</span>' + 
+                            '<a href="/checkout/item/remove/{{ item.product.id }}" class="secondary-content">' + 
+                                '<i class="fa fa-times"></i>' + 
+                            '</a>' + 
+                        '</div>' + 
+                    '</li>' + 
+                {% endfor %}
+            '</ul>' + 
+            '</div>' +
+            '<div class="card-action">' + 
+            '<a href="/checkout/">Checkout</a>' + 
+            '</div>' + 
+            {% else %} 
+            '<p>Please select one or more items from the shop.</p>' + 
+            '</div>' +
+            {% endif %}
+            '</div>');
+    });
+</script>
+{% endif %}

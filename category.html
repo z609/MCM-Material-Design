@@ -1,0 +1,85 @@
+{% extends base  %}
+{% load cumulative %}
+{% load i18n %}
+{% load humanize %}
+
+
+{% block content %}
+
+        {% if cat_info.catDesc %}
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">{{ cat_info.catName }}</span>
+                {{ cat_info.catDesc|safe|removetags:"script object src SRC OBJECT SCRIPT" }}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if cat_info.displaytype == '1' %}
+            <ul class="collection">
+        
+            {% for item in items %}
+                {% if item.active == 1 %}
+                    
+                    <li class="collection-item">
+                        <div>
+                            {{ item.itemName }} 
+                            <small class="grey-text">{% cumulative_pricing item.itemPrice cat_info.id item.id request.session.username CURRENCY.code market.currency %} {{ request.session.currency }}</small> 
+                            <a href="#{{ item.id }}" class="secondary-content"><i class="fa fa-plus"></i></a>
+                        </div>
+                    </li>
+                    
+                    <div id="{{ item.id }}" class="modal modal-fixed-footer">
+                        <div class="modal-content">
+                          <h4>{{ item.itemName }}</h4>
+                          <p>{{ item.itemDesc|safe|removetags:"script object src SRC OBJECT SCRIPT" }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="/checkout/item/add/{{ item.id }}/1" class="btn green modal-action modal-close waves-effect waves-green">
+                                {% cumulative_pricing item.itemPrice cat_info.id item.id request.session.username CURRENCY.code market.currency %} {{ request.session.currency }}
+                            </a>
+                            <a href="#" class="modal-action modal-close waves-effect btn-flat">Close</a>
+                        </div>
+                    </div>
+
+                {% endif %}
+            {% endfor %}
+            
+            </ul>
+        {% else %}
+            <div class="row">
+                {% for item in items %}
+                    {% if item.active == 1 %}
+                    
+                        <div class="col-md-4 col-sm-2">
+                            <div class="card">
+                                <div class="card-image userColor lighten-1">
+                                  <img src="{% if item.itemimage %}{{ MEDIA_URL }}{{ item.itemimage }}{% else %}{{ MEDIA_URL }}itemimages/default.png{% endif %}">
+                                  <span class="card-title" style="background: rgba(255, 255, 255, 0.85); color: #000; padding: 5px; margin: 5px;">{{ item.itemName }}</span>
+                                  <a href="#{{ item.id }}" class="btn-floating halfway-fab waves-effect waves-light userColor darken-1"><i class="fa fa-ellipsis-v"></i></a>
+                                </div>
+                                <div class="card-content">
+                                  <p>{% cumulative_pricing item.itemPrice cat_info.id item.id request.session.username CURRENCY.code market.currency %} {{ request.session.currency }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div id="{{ item.id }}" class="modal modal-fixed-footer">
+                            <div class="modal-content">
+                              <h4>{{ item.itemName }}</h4>
+                              <p>{{ item.itemDesc|safe|removetags:"script object src SRC OBJECT SCRIPT" }}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="/checkout/item/add/{{ item.id }}/1" class="btn green modal-action modal-close waves-effect waves-green">
+                                    {% cumulative_pricing item.itemPrice cat_info.id item.id request.session.username CURRENCY.code market.currency %} {{ request.session.currency }}
+                                </a>
+                                <a href="#" class="modal-action modal-close waves-effect btn-flat">Close</a>
+                            </div>
+                        </div>
+                    
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+        {% endif %}
+{% endblock %}

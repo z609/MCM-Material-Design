@@ -1,0 +1,74 @@
+{% load i18n %}
+
+<ul class="collapsible" data-collapsible="accordion">
+    <li style="padding: 0;">
+        <div class="collapsible-header" style="padding: 0;">
+            <a href="/" style="display: block; width: 100%; margin: 10px;"><i class="fa fa-home"></i> Home</a>        
+        </div>
+    </li>
+    {% for category in categories %}
+        {% if category.active == 1 %}
+            {% if category.parentcategory == None %}
+                {% if category.subcategories.all %}
+                
+                    <li style="padding: 0;">
+                        <div class="collapsible-header" style="padding: 0;">
+                            <a style="display: block; width: 100%; margin: 10px;"><i class="fa fa-chevron-right"></i> {{ category }}</a>
+                        </div>
+                        <div class="collapsible-body" style="padding: 0;">
+                            <span>
+                                
+                                <div class="collection">
+                                    {% if category.displaysub == False %}
+                                        <a href="/category/{{ category.id }}/" class="collection-item"><i class="fa fa-chevron-right"></i> {{ category }}</a>
+                                    {% endif %}
+                                    {% for sub in categories %}
+                                        {% if sub.parentcategory.id == category.id %}
+                                            <a href="/category/{{ sub.id }}/" class="collection-item"><i class="fa fa-chevron-right"></i> {{ sub }}</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            
+                            </span>
+                            
+                        </div>
+                    </li>
+                
+                {% else %}
+                    <li style="padding: 0;">
+                        <div class="collapsible-header" style="padding: 0;">
+                            <a href="/category/{{ category.id }}" style="display: block; width: 100%; margin: 10px;"><i class="fa fa-chevron-right"></i> {{ category }}</a>        
+                        </div>
+                    </li>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</ul>
+<div style="margin-top: 10px; margin-bottom: 10px;">
+    <div style="float: left; width: 70%;">
+        <div id="google_translate_element"></div>
+        <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false}, 'google_translate_element');
+        }
+        </script>
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    </div>
+    <form id="currency_switcher" method="POST" action="{% url "currencies_set_currency" %}" style="float: left; width: 30%;">
+        <select id="currency" name="currency" 
+                onchange="$('#currency_switcher').submit()" 
+                style="display: block;">
+            {% for curr in CURRENCIES %}
+                <option value="{{ curr.code }}"
+                        {% ifequal curr.code CURRENCY.code %}selected="selected"{% endifequal %}>
+                    {{ curr.symbol }} {{ curr.code }}
+                </option>
+            {% endfor %}
+        </select>
+        <noscript>
+            <input type="submit" value="Set" />
+        </noscript>
+    </form>
+    <div style="clear: both;"></div>
+</div>

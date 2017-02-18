@@ -1,0 +1,121 @@
+{% load currency %}
+{% load cumulative %}
+{% load i18n %}
+{% load humanize %}
+
+{% if modules.count != 0 %}
+    {% for market_modules in modules %}
+        <div class="card mm_module">
+            <div class="card-content">
+                <span class="card-title">{{ market_modules.title }}</span>
+            {% if market_modules.type == '1' %}
+                {{ market_modules.ip }}{% if  market_modules.port != 25565 %}:
+                {{ market_modules.port }}{% endif %}
+                <div class="pull-right">
+                    {% if market_modules.online %}
+                        <span style="color: green; font-weight: bold;">ONLINE</span>
+                    {% else %}
+                        <span style="color: red; font-weight: bold;">OFFLINE</span>
+                    {% endif %}
+                </div><br>
+                <small>{{ market_modules.players }} / {{ market_modules.maxplayers }}</small>
+            {% elif market_modules.type == '2' %}
+                {% if market_modules.recent_donors.count > 0 %}
+                <div class="store-donators">
+                        {% for donor in market_modules.recent_donors.all %}
+                        <div>
+                            <div style="float: left;">
+                                <img src="https://minotar.net/helm/{{ donor.username }}/32.png" title="{{ donor.username }}" alt="{{ donor.username }}" style="margin-top: 4.5px;">
+                            </div>
+                            <p style="float: left; margin-left: 15px;">
+                                <strong class="donator-username" style="display: block; margin-bottom: -5px;">{{ donor.username }}</strong>
+                                <small class="text-muted">{{donor.itemid}} for {{ donor.cost|intcomma }} {{ market.currency }}</small>
+                            </p>
+                        </div>
+                        <div style="clear: both;"></div>
+                        {% endfor %}
+                </div>
+                    {% else %}
+                                                <ul class="list-group">
+  <li class="list-group-item text-center" style="color:#ffffff; background-color: #3498db;">No recent purchases.</li>
+</ul>
+                {% endif %}
+                {% elif market_modules.type == '3' %}
+                <div class="store-goal" style="padding: 0;">
+                    <div class="grey-text" style="text-align: center; padding: 10px;">
+                        {{ market_modules.goal_amount|intcomma }} / {{ market_modules.goal|intcomma }} {{ market.currency }}
+                    </div>
+
+                    <div class="progress userColor lighten-3" style="width: auto; margin-bottom: -28px; margin-left: -25px; margin-right: -25px;">
+                        <div class="determinite userColor" style="width: {{ market_modules.goal_percentage }}%; height: 4px;"></div>
+                    </div>
+                </div>
+            {% elif market_modules.type == '4' %}
+                {{ market_modules.text|safe|removetags:"script object src SRC OBJECT SCRIPT" }}
+            {% elif market_modules.type == '5' %}
+              {% if market_modules.top_donor and market_modules.donor_amount %}
+                    <div class="module-topdonor">
+                        <div class="module-topdonor-image">
+                            <img src="https://www.minotar.net/bust/{{ market_modules.top_donor }}.png"
+                                 title="{{ market_modules.top_donor }}"
+                                 alt="{{ market_modules.top_donor }}"
+                                 style="max-width: 100px;">
+                        </div>
+                        <div class="module-topdonor-text">
+                            <h5 style="margin: 0;">{{ market_modules.top_donor }}</h5>
+                            <small>has spent {% change_currency market_modules.donor_amount request.session.currency market.currency %} {{ request.session.currency }}</small>
+                        </div>
+                    </div>
+                  {% else %}
+                            <ul class="list-group">
+  <li class="list-group-item text-cegnter" style="color:#ffffff; background-color: #3498db;">No top customers.</li>
+</ul>
+                    {% endif %}
+            {% elif market_modules.type == '6' %}
+                <div class="module-featured">
+                    <div class="card-image userColor lighten-1">
+                      <img src="{% if market_modules.featureditem.itemimage %}{{ MEDIA_URL }}{{ market_modules.featureditem.itemimage }}{% else %}{{ MEDIA_URL }}itemimages/default.png{% endif %}">
+                      <span class="card-title" style="background: rgba(255, 255, 255, 0.85); color: #000; padding: 5px; margin: 5px;">{{ market_modules.featureditem.itemName }}</span>
+                      <a href="#featured{{ market_modules.featureditem.id }}" class="btn-floating halfway-fab waves-effect waves-light userColor darken-1"><i class="fa fa-ellipsis-v"></i></a>
+                    </div>
+                    <div class="card-content">
+                      <p>{% cumulative_pricing market_modules.featureditem.itemPrice market_modules.featureditem.itemCat.id market_modules.featureditem.id request.session.username CURRENCY.code market.currency %} {{ request.session.currency }}</p>
+                    </div>
+                </div>
+                
+                <div id="featured{{ market_modules.featureditem.id }}" class="modal modal-fixed-footer">
+                    <div class="modal-content">
+                      <h4>{{ market_modules.featureditem.itemName }}</h4>
+                      <p>{{ market_modules.featureditem.itemDesc|safe|removetags:"script object src SRC OBJECT SCRIPT" }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/checkout/market_modules.featureditem/add/{{ market_modules.featureditem.id }}/1" class="btn green modal-action modal-close waves-effect waves-green">
+                            {% cumulative_pricing market_modules.featureditem.itemPrice cat_info.id market_modules.featureditem.id request.session.username CURRENCY.code market.currency %} {{ request.session.currency }}
+                        </a>
+                        <a href="#" class="modal-action modal-close waves-effect btn-flat">Close</a>
+                    </div>
+                </div>
+
+            {% endif %}
+            </div>
+        </div>
+
+
+    {% endfor %}
+{% endif %}
+
+{% if advertisements %}
+    <div class="card">
+        <div class="card-content" style="overflow: hidden;">
+            <script type="text/javascript"><!--
+            google_ad_client = "ca-pub-4435275545393266";
+            /* MarketSideBar */
+            google_ad_slot = "1601721299";
+            google_ad_width = 320;
+            google_ad_height = 50;
+            //-->
+            </script>
+            <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+        </div>
+    </div>
+{% endif %}

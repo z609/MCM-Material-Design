@@ -1,0 +1,22 @@
+{% extends base %}
+{% load i18n %}
+
+{% block content %}
+        <div class="card">
+			<div class="card-content">
+				<span class="card-title">Item Options</span>
+				<form method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+					<div class="form-group">
+						<label>{{ variable.desc }}</label>
+						{% if variable.type == '1' %}
+							{{ variable_form.option }}
+						{% else %}
+							{{ variable_form.text }}
+						{% endif %}
+					</div>
+					<button type="submit" class="btn">Continue</button>
+				</form>
+			</div>
+        </div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends base  %}
+{% load cumulative %}
+{% load i18n %}
+{% block content %}
+<div class="card">
+	<div class="card-content">
+        <span class="card-title">Terms of Service</title>
+		<p>
+			{{ market.TOS|safe|removetags:"script object src SRC OBJECT SCRIPT" }}
+		</p>
+    </div>
+</div>
+{% endblock %}
