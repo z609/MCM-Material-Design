@@ -35,10 +35,10 @@
                         <div style="clear: both;"></div>
                         {% endfor %}
                 </div>
-                    {% else %}
-                                                <ul class="list-group">
-  <li class="list-group-item text-center" style="color:#ffffff; background-color: #3498db;">No recent purchases.</li>
-</ul>
+                {% else %}
+                    <div class="blue white-text" style="margin-left: -25px; margin-right: -25px; margin-bottom: -25px; padding: 15px;">
+                        There are no top customers.
+                    </div>
                 {% endif %}
                 {% elif market_modules.type == '3' %}
                 <div class="store-goal" style="padding: 0;">
