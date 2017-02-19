@@ -53,7 +53,7 @@
             {% elif market_modules.type == '4' %}
                 {{ market_modules.text|safe|removetags:"script object src SRC OBJECT SCRIPT" }}
             {% elif market_modules.type == '5' %}
-              {% if market_modules.top_donor and market_modules.donor_amount %}
+				{% if market_modules.top_donor and market_modules.donor_amount %}
                     <div class="module-topdonor">
                         <div class="module-topdonor-image">
                             <img src="https://www.minotar.net/bust/{{ market_modules.top_donor }}.png"
@@ -66,11 +66,11 @@
                             <small>has spent {% change_currency market_modules.donor_amount request.session.currency market.currency %} {{ request.session.currency }}</small>
                         </div>
                     </div>
-                  {% else %}
-                            <ul class="list-group">
-  <li class="list-group-item text-cegnter" style="color:#ffffff; background-color: #3498db;">No top customers.</li>
-</ul>
-                    {% endif %}
+                {% else %}
+                    <div class="blue white-text" style="margin-left: -25px; margin-right: -25px; margin-bottom: -25px; padding: 15px;">
+                        There are no top customers.
+                    </div>
+				{% endif %}
             {% elif market_modules.type == '6' %}
                 <div class="module-featured">
                     <div class="card-image userColor lighten-1">
